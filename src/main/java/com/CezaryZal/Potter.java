@@ -2,7 +2,8 @@ package com.CezaryZal;
 
 public class Potter {
 
-    public int returnTmpNumber(){
-        return 1;
+
+    public int getPriceFromBasket() {
+        return 8;
     }
 }

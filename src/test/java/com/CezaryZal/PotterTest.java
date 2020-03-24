@@ -8,8 +8,8 @@ import static org.assertj.core.api.Assertions.*;
 public class PotterTest {
 
     @Test
-    void returnTmpNumber() {
+    void shouldReturnPriceOfOneBook() {
         Potter potter = new Potter();
-        assertThat(potter.returnTmpNumber()).isEqualTo(1);
+        assertThat(potter.getPriceFromBasket()).isEqualTo(8);
     }
 }

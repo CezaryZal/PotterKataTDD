@@ -7,21 +7,22 @@ public class Potter {
 
 
     public String buyBooks(int numberOfBooks) {
-        double priceOfBooks = 0;
+        double discount = 0;
         switch (numberOfBooks) {
-            case 1: {
-                priceOfBooks = calculateValueOfBookIncludingDiscount(1, 0);
-                break;
-            }
             case 2: {
-                priceOfBooks = calculateValueOfBookIncludingDiscount(2, 0.05);
+                discount = 0.05;;
                 break;
             }
             case 3: {
-                priceOfBooks = calculateValueOfBookIncludingDiscount(3, 0.1);
+                discount = 0.1;
+                break;
+            }
+            case 4: {
+                discount = 0.2;
                 break;
             }
         }
+        double priceOfBooks = calculateValueOfBookIncludingDiscount(numberOfBooks, discount);
         return getPriceFromBasket(priceOfBooks);
     }
 

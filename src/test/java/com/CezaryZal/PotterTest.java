@@ -10,6 +10,12 @@ public class PotterTest {
     @Test
     void shouldReturnPriceOfOneBook() {
         Potter potter = new Potter();
-        assertThat(potter.getPriceFromBasket()).isEqualTo("8€");
+        assertThat(potter.buyBooks(1)).isEqualTo("8.0€");
+    }
+
+    @Test
+    void shouldReturnPriceOfTwoBook(){
+        Potter potter = new Potter();
+        assertThat(potter.buyBooks(2)).isEqualTo("15.2€");
     }
 }

@@ -3,25 +3,36 @@ package com.CezaryZal;
 public class Potter {
 
     private final String euroMark = "€";
-    private double priceOfOneBook = 8.0;
-
+    private final double priceOfOneBook = 8.0;
 
 
     public String buyBooks(int numberOfBooks) {
-        if (numberOfBooks == 2){
-            return getPriceForTwoBooksWithDiscount();
+        double priceOfBooks = 0;
+        switch (numberOfBooks) {
+            case 1: {
+                priceOfBooks = calculateValueOfBookIncludingDiscount(1, 0);
+                break;
+            }
+            case 2: {
+                priceOfBooks = calculateValueOfBookIncludingDiscount(2, 0.05);
+                break;
+            }
+            case 3: {
+                priceOfBooks = calculateValueOfBookIncludingDiscount(3, 0.1);
+                break;
+            }
         }
-        return getPriceForOneBook();
+        return getPriceFromBasket(priceOfBooks);
     }
 
-    private String getPriceForTwoBooksWithDiscount(){
-        double amountOfBooks = priceOfOneBook * 2;
-        double discount = 0.05;
+    private double calculateValueOfBookIncludingDiscount(
+            int numberOfBooks, double discount){
 
-        return amountOfBooks - amountOfBooks * discount + euroMark;
+        double amountOfBooks = priceOfOneBook * numberOfBooks;
+        return amountOfBooks - amountOfBooks * discount;
     }
 
-    private String getPriceForOneBook() {
-        return priceOfOneBook + euroMark;
+    private String getPriceFromBasket(double priceOfBooks) {
+        return priceOfBooks + euroMark;
     }
 }

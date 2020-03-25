@@ -8,7 +8,7 @@ public class Potter {
     public String buyBooks(int numberOfDifferentBooks, int numberOfSameBook) {
         throwIfBasketContainsNegativeNumber(numberOfSameBook);
         double amountOfBooks = calculateValueOfBookIncludingDiscount(numberOfDifferentBooks) +
-                priceOfOneBook;
+                calculateValueOfBook(numberOfSameBook);
 
         return getPriceFromBasket(amountOfBooks);
     }
@@ -18,6 +18,10 @@ public class Potter {
         double amountOfBooks = calculateValueOfBookIncludingDiscount(numberOfDifferentBooks);
 
         return getPriceFromBasket(amountOfBooks);
+    }
+
+    private double calculateValueOfBook(int numberOfBooks){
+        return numberOfBooks * priceOfOneBook;
     }
 
     private double calculateValueOfBookIncludingDiscount(int numberOfBooks){
@@ -40,7 +44,7 @@ public class Potter {
                 break;
             }
         }
-        double amountOfBooks = priceOfOneBook * numberOfBooks;
+        double amountOfBooks = calculateValueOfBook(numberOfBooks);
 
         return amountOfBooks - amountOfBooks * discount;
     }

@@ -61,4 +61,10 @@ public class PotterTest {
         String priceOfFourBooks = potter.buyBooks(3, 1);
         assertThat(priceOfFourBooks).isEqualTo("29.6€");
     }
+
+    @Test
+    void shouldReturnPriceOfThreeDifferentBooksAndTwoSameBook(){
+        String priceOfFiveBooks = potter.buyBooks(3, 2);
+        assertThat(priceOfFiveBooks).isEqualTo("37.6€");
+    }
 }

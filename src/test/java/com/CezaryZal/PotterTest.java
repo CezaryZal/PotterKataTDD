@@ -38,4 +38,10 @@ public class PotterTest {
         String priceOfTwoBooks = potter.buyBooks(4);
         assertThat(priceOfTwoBooks).isEqualTo("25.6€");
     }
+
+    @Test
+    void shouldReturnPriceOfFiveBooks(){
+        String priceOfTwoBooks = potter.buyBooks(5);
+        assertThat(priceOfTwoBooks).isEqualTo("30.0€");
+    }
 }

@@ -21,6 +21,10 @@ public class Potter {
                 discount = 0.2;
                 break;
             }
+            case 5: {
+                discount = 0.25;
+                break;
+            }
         }
         double priceOfBooks = calculateValueOfBookIncludingDiscount(numberOfBooks, discount);
         return getPriceFromBasket(priceOfBooks);

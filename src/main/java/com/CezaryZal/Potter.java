@@ -34,7 +34,7 @@ public class Potter {
     }
 
     private void throwIfBasketIsEmpty(int numberOfBooks) {
-        if (numberOfBooks == 0){
+        if (numberOfBooks < 1){
             throw new EmptyBasketException();
         }
     }

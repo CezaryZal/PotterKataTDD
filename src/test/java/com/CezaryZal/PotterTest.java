@@ -50,4 +50,9 @@ public class PotterTest {
     void shouldThrowIfBasketIsEmpty(){
         Assertions.assertThrows(EmptyBasketException.class, () -> potter.buyBooks(0));
     }
+
+    @Test
+    void shouldThrowWhenBasketContainsNegativeNumber(){
+        Assertions.assertThrows(EmptyBasketException.class, () -> potter.buyBooks(-2));
+    }
 }

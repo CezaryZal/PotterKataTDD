@@ -87,8 +87,8 @@ public class PotterTest {
 
     @Test
     void shouldThrowWhenBasketContainsUnknownBook(){
-        int [] basket = {5};
-        Assertions.assertThrows(EmptyBasketException.class, () -> potter.buyBooks(basket));
+        int [] basket = {1, 5};
+        Assertions.assertThrows(IncorrectNumberOfBookException.class, () -> potter.buyBooks(basket));
     }
 //
 //    @Test

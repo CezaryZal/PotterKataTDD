@@ -1,18 +1,15 @@
 package com.CezaryZal;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class Potter {
+    private int[] parsedBasket = new int[5];
 
     private final String euroMark = "€";
     private final double priceOfOneBook = 8.0;
 
-    public String buyBooks(int[] basket) {
-        Map<String, Integer> orderedBasket = parseBasket(basket);
+    public String buyBooks(int[] inputBasket) {
+        parseBasket(inputBasket);
 
-
-        int numberOfDifferentBooks = calculateNumberOfDifferentBooksInBasket(orderedBasket);
+        int numberOfDifferentBooks = calculateNumberOfDifferentBooksInBasket();
         double amountOfBooks = calculateValueOfBook(numberOfDifferentBooks);
 
         double discount = calculateDiscountByNumberOfDifferentBooks(numberOfDifferentBooks);
@@ -20,59 +17,33 @@ public class Potter {
 
 
         return getPriceByAmountOfBooks(amountOfBooksWithDiscount);
-
     }
 
-    private int calculateNumberOfDifferentBooksInBasket(Map<String, Integer> parseBasket){
+    private int calculateNumberOfDifferentBooksInBasket() {
         int numberOfDifferentBooks = 0;
-        for (Integer numberOfBooks : parseBasket.values() ){
-            if (numberOfBooks != 0){
+
+        for (int i = 0; i < parsedBasket.length; i++) {
+            int numberOfBooks = parsedBasket[i];
+
+            if (numberOfBooks != 0) {
                 numberOfDifferentBooks++;
+                parsedBasket[i] = --numberOfBooks;
             }
+
         }
         return numberOfDifferentBooks;
     }
 
-
-    private Map<String, Integer> parseBasket(int[] basket) {
-        Map<String, Integer> orderedBasket = new HashMap<>();
-        orderedBasket.put("First", 0);
-        orderedBasket.put("Second", 0);
-        orderedBasket.put("Third", 0);
-        orderedBasket.put("Fourth", 0);
-        orderedBasket.put("Fifth", 0);
-
-        for (int book : basket) {
-            throwIfBasketContainsNegativeNumberOrUnknownBook(book);
-            switch (book) {
-                case 0: {
-                    Integer numberOfFirstBooks = orderedBasket.get("First");
-                    orderedBasket.replace("First", ++numberOfFirstBooks);
-                    break;
-                }
-                case 1: {
-                    Integer numberOfSecondBooks = orderedBasket.get("Second");
-                    orderedBasket.replace("Second", ++numberOfSecondBooks);
-                    break;
-                }
-                case 2: {
-                    Integer numberOfThirdBooks = orderedBasket.get("Third");
-                    orderedBasket.replace("Third", ++numberOfThirdBooks);
-                    break;
-                }
-                case 3: {
-                    Integer numberOfFourthBooks = orderedBasket.get("Fourth");
-                    orderedBasket.replace("Fourth", ++numberOfFourthBooks);
-                    break;
-                }
-                case 4: {
-                    Integer numberOfFifthBooks = orderedBasket.get("Fifth");
-                    orderedBasket.replace("Fifth", ++numberOfFifthBooks);
-                    break;
-                }
-            }
+    private void parseBasket(int[] InputBasket) {
+        for (int numberOfBooks : InputBasket) {
+            throwIfBasketContainsNegativeNumberOrUnknownBook(numberOfBooks);
+            addBookToCorrectType(numberOfBooks);
         }
-        return orderedBasket;
+    }
+
+    private void addBookToCorrectType(int numberOfBooks) {
+        int numberOfFirstBooks = parsedBasket[numberOfBooks];
+        parsedBasket[numberOfBooks] = ++numberOfFirstBooks;
     }
 
     private double calculateValueOfBook(int numberOfBooks) {
@@ -103,8 +74,10 @@ public class Potter {
     }
 
     private void throwIfBasketContainsNegativeNumberOrUnknownBook(int numberOfBooks) {
-        if (numberOfBooks < 0 || numberOfBooks > 4) {
+        if (numberOfBooks < 0) {
             throw new EmptyBasketException();
+        } else if (numberOfBooks > 4) {
+            throw new IncorrectNumberOfBookException();
         }
     }
 

@@ -7,6 +7,8 @@ public class Potter {
 
 
     public String buyBooks(int numberOfBooks) {
+        throwIfBasketIsEmpty(numberOfBooks);
+
         double discount = 0;
         switch (numberOfBooks) {
             case 2: {
@@ -27,7 +29,14 @@ public class Potter {
             }
         }
         double priceOfBooks = calculateValueOfBookIncludingDiscount(numberOfBooks, discount);
+
         return getPriceFromBasket(priceOfBooks);
+    }
+
+    private void throwIfBasketIsEmpty(int numberOfBooks) {
+        if (numberOfBooks == 0){
+            throw new EmptyBasketException();
+        }
     }
 
     private double calculateValueOfBookIncludingDiscount(

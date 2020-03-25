@@ -1,6 +1,7 @@
 package com.CezaryZal;
 
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -29,19 +30,24 @@ public class PotterTest {
 
     @Test
     void shouldReturnPriceOfThreeBooks(){
-        String priceOfTwoBooks = potter.buyBooks(3);
-        assertThat(priceOfTwoBooks).isEqualTo("21.6€");
+        String priceOfThreeBooks = potter.buyBooks(3);
+        assertThat(priceOfThreeBooks).isEqualTo("21.6€");
     }
 
     @Test
     void shouldReturnPriceOfFourBooks(){
-        String priceOfTwoBooks = potter.buyBooks(4);
-        assertThat(priceOfTwoBooks).isEqualTo("25.6€");
+        String priceOfFourBooks = potter.buyBooks(4);
+        assertThat(priceOfFourBooks).isEqualTo("25.6€");
     }
 
     @Test
     void shouldReturnPriceOfFiveBooks(){
-        String priceOfTwoBooks = potter.buyBooks(5);
-        assertThat(priceOfTwoBooks).isEqualTo("30.0€");
+        String priceOfFiveBooks = potter.buyBooks(5);
+        assertThat(priceOfFiveBooks).isEqualTo("30.0€");
+    }
+
+    @Test
+    void shouldThrowIfBasketIsEmpty(){
+        Assertions.assertThrows(EmptyBasketException.class, () -> potter.buyBooks(0));
     }
 }

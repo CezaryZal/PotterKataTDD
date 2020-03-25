@@ -5,6 +5,18 @@ public class Potter {
     private final String euroMark = "€";
     private final double priceOfOneBook = 8.0;
 
+    public String buyBooks(
+            int numberOfFirstBooks,
+            int numberOfSecondBook,
+            int numberOfThirdBook,
+            int numberOfFourthBook,
+            int numberOfFifthBook) {
+        throwIfBasketContainsNegativeNumber(numberOfFirstBooks);
+
+        double amountOfBooks = numberOfFirstBooks * priceOfOneBook;
+
+        return getPriceFromBasket(amountOfBooks);
+    }
     public String buyBooks(int numberOfDifferentBooks, int numberOfSameBook) {
         throwIfBasketContainsNegativeNumber(numberOfSameBook);
         double amountOfBooks = calculateValueOfBookIncludingDiscount(numberOfDifferentBooks) +

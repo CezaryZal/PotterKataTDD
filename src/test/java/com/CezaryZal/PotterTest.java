@@ -17,9 +17,9 @@ public class PotterTest {
     }
 
     @Test
-    void shouldReturnPriceOfOneBook() {
-        String priceOfOneBook = potter.buyBooks(1);
-        assertThat(priceOfOneBook).isEqualTo("8.0€");
+    void shouldReturnPriceOfFirstBook() {
+        String priceForOneFirstBook = potter.buyBooks(1, 0, 0, 0, 0);
+        assertThat(priceForOneFirstBook).isEqualTo("8.0€");
     }
 
     @Test

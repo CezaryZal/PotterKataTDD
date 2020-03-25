@@ -90,16 +90,25 @@ public class PotterTest {
         int [] basket = {1, 5};
         Assertions.assertThrows(IncorrectNumberOfBookException.class, () -> potter.buyBooks(basket));
     }
-//
-//    @Test
-//    void shouldReturnPriceOfThreeDifferentBooksAndOneSameBook(){
-//        String priceOfFourBooks = potter.buyBooks(3, 1);
-//        assertThat(priceOfFourBooks).isEqualTo("29.6€");
-//    }
-//
-//    @Test
-//    void shouldReturnPriceOfThreeDifferentBooksAndTwoSameBook(){
-//        String priceOfFiveBooks = potter.buyBooks(3, 2);
-//        assertThat(priceOfFiveBooks).isEqualTo("37.6€");
-//    }
+
+    @Test
+    void shouldReturnPriceOfThreeDifferentBooksAndOneSameBook(){
+        int [] basket = {0, 1, 2, 0};
+        String priceOfFourBooks = potter.buyBooks(basket);
+        assertThat(priceOfFourBooks).isEqualTo("29.6€");
+    }
+
+    @Test
+    void shouldReturnPriceOfThreeDifferentBooksAndTwoSameBook(){
+        int [] basket = {0, 1, 2, 0, 1};
+        String priceOfFiveBooks = potter.buyBooks(basket);
+        assertThat(priceOfFiveBooks).isEqualTo("36.8€");
+    }
+
+    @Test
+    void shouldReturnPriceOfThreeDifferentBooksAndThreeSameBook(){
+        int [] basket = {0, 0, 1, 0, 1, 3};
+        String priceOfSixBooks = potter.buyBooks(basket);
+        assertThat(priceOfSixBooks).isEqualTo("44.8€");
+    }
 }

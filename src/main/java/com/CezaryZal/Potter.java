@@ -2,36 +2,46 @@ package com.CezaryZal;
 
 public class Potter {
     private int[] parsedBasket = new int[5];
+    private boolean parsedBasketIsEmpty;
 
     private final String euroMark = "€";
     private final double priceOfOneBook = 8.0;
 
     public String buyBooks(int[] inputBasket) {
         parseBasket(inputBasket);
+        double amountOfBooksWithDiscount = 0;
 
-        int numberOfDifferentBooks = calculateNumberOfDifferentBooksInBasket();
-        double amountOfBooks = calculateValueOfBook(numberOfDifferentBooks);
-
-        double discount = calculateDiscountByNumberOfDifferentBooks(numberOfDifferentBooks);
-        double amountOfBooksWithDiscount = amountOfBooks - amountOfBooks * discount;
-
-
+        while (!parsedBasketIsEmpty){
+            int numberOfDifferentBooks = calculateNumberOfDifferentBooksInBasket();
+            double amountOfBooks = calculateValueOfBook(numberOfDifferentBooks);
+            double discount = calculateDiscountByNumberOfDifferentBooks(numberOfDifferentBooks);
+            amountOfBooksWithDiscount += amountOfBooks - amountOfBooks * discount;
+        }
         return getPriceByAmountOfBooks(amountOfBooksWithDiscount);
     }
 
     private int calculateNumberOfDifferentBooksInBasket() {
         int numberOfDifferentBooks = 0;
-
+        parsedBasketIsEmpty = true;
         for (int i = 0; i < parsedBasket.length; i++) {
-            int numberOfBooks = parsedBasket[i];
-
-            if (numberOfBooks != 0) {
-                numberOfDifferentBooks++;
-                parsedBasket[i] = --numberOfBooks;
-            }
-
+            numberOfDifferentBooks = handleNumberOfBook(numberOfDifferentBooks, i, parsedBasket[i]);
+            checkIfBasketStillHasBook(i);
         }
         return numberOfDifferentBooks;
+    }
+
+    private int handleNumberOfBook(int numberOfDifferentBooks, int iteration, int numberOfBooks) {
+        if (numberOfBooks != 0) {
+            numberOfDifferentBooks++;
+            parsedBasket[iteration] = --numberOfBooks;
+        }
+        return numberOfDifferentBooks;
+    }
+
+    private void checkIfBasketStillHasBook(int iteration) {
+        if (parsedBasket[iteration] != 0){
+            parsedBasketIsEmpty = false;
+        }
     }
 
     private void parseBasket(int[] InputBasket) {

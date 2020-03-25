@@ -5,10 +5,22 @@ public class Potter {
     private final String euroMark = "€";
     private final double priceOfOneBook = 8.0;
 
+    public String buyBooks(int numberOfDifferentBooks, int numberOfSameBook) {
+        throwIfBasketContainsNegativeNumber(numberOfSameBook);
+        double amountOfBooks = calculateValueOfBookIncludingDiscount(numberOfDifferentBooks) +
+                priceOfOneBook;
 
-    public String buyBooks(int numberOfBooks) {
-        throwIfBasketIsEmpty(numberOfBooks);
+        return getPriceFromBasket(amountOfBooks);
+    }
 
+    public String buyBooks(int numberOfDifferentBooks) {
+        throwIfBasketContainsNegativeNumber(numberOfDifferentBooks);
+        double amountOfBooks = calculateValueOfBookIncludingDiscount(numberOfDifferentBooks);
+
+        return getPriceFromBasket(amountOfBooks);
+    }
+
+    private double calculateValueOfBookIncludingDiscount(int numberOfBooks){
         double discount = 0;
         switch (numberOfBooks) {
             case 2: {
@@ -28,22 +40,15 @@ public class Potter {
                 break;
             }
         }
-        double priceOfBooks = calculateValueOfBookIncludingDiscount(numberOfBooks, discount);
+        double amountOfBooks = priceOfOneBook * numberOfBooks;
 
-        return getPriceFromBasket(priceOfBooks);
+        return amountOfBooks - amountOfBooks * discount;
     }
 
-    private void throwIfBasketIsEmpty(int numberOfBooks) {
+    private void throwIfBasketContainsNegativeNumber(int numberOfBooks) {
         if (numberOfBooks < 1){
             throw new EmptyBasketException();
         }
-    }
-
-    private double calculateValueOfBookIncludingDiscount(
-            int numberOfBooks, double discount){
-
-        double amountOfBooks = priceOfOneBook * numberOfBooks;
-        return amountOfBooks - amountOfBooks * discount;
     }
 
     private String getPriceFromBasket(double priceOfBooks) {

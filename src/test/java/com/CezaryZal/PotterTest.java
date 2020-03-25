@@ -55,4 +55,10 @@ public class PotterTest {
     void shouldThrowWhenBasketContainsNegativeNumber(){
         Assertions.assertThrows(EmptyBasketException.class, () -> potter.buyBooks(-2));
     }
+
+    @Test
+    void shouldReturnPriceOfThreeDifferentBooksAndOneSameBook(){
+        String priceOfFourBooks = potter.buyBooks(3, 1);
+        assertThat(priceOfFourBooks).isEqualTo("29.6€");
+    }
 }

@@ -18,7 +18,8 @@ public class PotterTest {
 
     @Test
     void shouldReturnPriceOfFirstBook() {
-        String priceForOneFirstBook = potter.buyBooks(1, 0, 0, 0, 0);
+        int [] basket = {0};
+        String priceForOneFirstBook = potter.buyBooks(basket);
         assertThat(priceForOneFirstBook).isEqualTo("8.0€");
     }
 
@@ -44,11 +45,6 @@ public class PotterTest {
     void shouldReturnPriceOfFiveBooks(){
         String priceOfFiveBooks = potter.buyBooks(5);
         assertThat(priceOfFiveBooks).isEqualTo("30.0€");
-    }
-
-    @Test
-    void shouldThrowIfBasketIsEmpty(){
-        Assertions.assertThrows(EmptyBasketException.class, () -> potter.buyBooks(0));
     }
 
     @Test

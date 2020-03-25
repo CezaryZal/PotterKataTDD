@@ -5,15 +5,15 @@ public class Potter {
     private final String euroMark = "€";
     private final double priceOfOneBook = 8.0;
 
-    public String buyBooks(
-            int numberOfFirstBooks,
-            int numberOfSecondBook,
-            int numberOfThirdBook,
-            int numberOfFourthBook,
-            int numberOfFifthBook) {
-        throwIfBasketContainsNegativeNumber(numberOfFirstBooks);
+    public String buyBooks(int [] basket) {
+        int numberOfFirstBooks;
+        int numberOfSecondBook;
+        int numberOfThirdBook;
+        int numberOfFourthBook;
+        int numberOfFifthBook;
+        throwIfBasketContainsNegativeNumber(basket[0]);
 
-        double amountOfBooks = numberOfFirstBooks * priceOfOneBook;
+        double amountOfBooks = 1 * priceOfOneBook;
 
         return getPriceFromBasket(amountOfBooks);
     }
@@ -62,7 +62,7 @@ public class Potter {
     }
 
     private void throwIfBasketContainsNegativeNumber(int numberOfBooks) {
-        if (numberOfBooks < 1){
+        if (numberOfBooks < 0){
             throw new EmptyBasketException();
         }
     }

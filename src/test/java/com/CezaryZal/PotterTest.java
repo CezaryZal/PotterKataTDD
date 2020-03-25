@@ -52,43 +52,54 @@ public class PotterTest {
     }
 
     @Test
-    void shouldReturnPriceOfTwoBooks(){
-        String priceOfTwoBooks = potter.buyBooks(2);
-        assertThat(priceOfTwoBooks).isEqualTo("15.2€");
-    }
-
-    @Test
-    void shouldReturnPriceOfThreeBooks(){
-        String priceOfThreeBooks = potter.buyBooks(3);
-        assertThat(priceOfThreeBooks).isEqualTo("21.6€");
-    }
-
-    @Test
-    void shouldReturnPriceOfFourBooks(){
-        String priceOfFourBooks = potter.buyBooks(4);
-        assertThat(priceOfFourBooks).isEqualTo("25.6€");
-    }
-
-    @Test
-    void shouldReturnPriceOfFiveBooks(){
-        String priceOfFiveBooks = potter.buyBooks(5);
-        assertThat(priceOfFiveBooks).isEqualTo("30.0€");
-    }
-
-    @Test
     void shouldThrowWhenBasketContainsNegativeNumber(){
-        Assertions.assertThrows(EmptyBasketException.class, () -> potter.buyBooks(-2));
+        int [] basket = {-4};
+        Assertions.assertThrows(EmptyBasketException.class, () -> potter.buyBooks(basket));
     }
 
     @Test
-    void shouldReturnPriceOfThreeDifferentBooksAndOneSameBook(){
-        String priceOfFourBooks = potter.buyBooks(3, 1);
-        assertThat(priceOfFourBooks).isEqualTo("29.6€");
+    void shouldReturnPriceOfTwoDifferentBooks(){
+        int [] basket = {0, 1};
+        String priceOfTwoDifferentBooks = potter.buyBooks(basket);
+        assertThat(priceOfTwoDifferentBooks).isEqualTo("15.2€");
     }
 
     @Test
-    void shouldReturnPriceOfThreeDifferentBooksAndTwoSameBook(){
-        String priceOfFiveBooks = potter.buyBooks(3, 2);
-        assertThat(priceOfFiveBooks).isEqualTo("37.6€");
+    void shouldReturnPriceOfThreeDifferentBooks(){
+        int [] basket = {0, 1, 2};
+        String priceOfThreeDifferentBooks = potter.buyBooks(basket);
+        assertThat(priceOfThreeDifferentBooks).isEqualTo("21.6€");
     }
+
+    @Test
+    void shouldReturnPriceOfFourDifferentBooks(){
+        int [] basket = {0, 1, 2, 3};
+        String priceOfFourDifferentBooks = potter.buyBooks(basket);
+        assertThat(priceOfFourDifferentBooks).isEqualTo("25.6€");
+    }
+
+    @Test
+    void shouldReturnPriceOfFiveDifferentBooks(){
+        int [] basket = {0, 1, 2, 3, 4};
+        String priceOfFiveDifferentBooks = potter.buyBooks(basket);
+        assertThat(priceOfFiveDifferentBooks).isEqualTo("30.0€");
+    }
+
+    @Test
+    void shouldThrowWhenBasketContainsUnknownBook(){
+        int [] basket = {5};
+        Assertions.assertThrows(EmptyBasketException.class, () -> potter.buyBooks(basket));
+    }
+//
+//    @Test
+//    void shouldReturnPriceOfThreeDifferentBooksAndOneSameBook(){
+//        String priceOfFourBooks = potter.buyBooks(3, 1);
+//        assertThat(priceOfFourBooks).isEqualTo("29.6€");
+//    }
+//
+//    @Test
+//    void shouldReturnPriceOfThreeDifferentBooksAndTwoSameBook(){
+//        String priceOfFiveBooks = potter.buyBooks(3, 2);
+//        assertThat(priceOfFiveBooks).isEqualTo("37.6€");
+//    }
 }

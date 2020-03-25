@@ -11,27 +11,28 @@ public class Potter {
     public String buyBooks(int[] basket) {
         Map<String, Integer> orderedBasket = parseBasket(basket);
 
-        int allBooksInBasket = orderedBasket.values().stream().mapToInt(a -> a).sum();
 
-        double amountOfBooks = calculateValueOfBook(allBooksInBasket);
+        int numberOfDifferentBooks = calculateNumberOfDifferentBooksInBasket(orderedBasket);
+        double amountOfBooks = calculateValueOfBook(numberOfDifferentBooks);
 
-        return getPriceByAmountOfBooks(amountOfBooks);
+        double discount = calculateDiscountByNumberOfDifferentBooks(numberOfDifferentBooks);
+        double amountOfBooksWithDiscount = amountOfBooks - amountOfBooks * discount;
+
+
+        return getPriceByAmountOfBooks(amountOfBooksWithDiscount);
+
     }
 
-    public String buyBooks(int numberOfDifferentBooks, int numberOfSameBook) {
-        throwIfBasketContainsNegativeNumber(numberOfSameBook);
-        double amountOfBooks = calculateValueOfBookIncludingDiscount(numberOfDifferentBooks) +
-                calculateValueOfBook(numberOfSameBook);
-
-        return getPriceByAmountOfBooks(amountOfBooks);
+    private int calculateNumberOfDifferentBooksInBasket(Map<String, Integer> parseBasket){
+        int numberOfDifferentBooks = 0;
+        for (Integer numberOfBooks : parseBasket.values() ){
+            if (numberOfBooks != 0){
+                numberOfDifferentBooks++;
+            }
+        }
+        return numberOfDifferentBooks;
     }
 
-    public String buyBooks(int numberOfDifferentBooks) {
-        throwIfBasketContainsNegativeNumber(numberOfDifferentBooks);
-        double amountOfBooks = calculateValueOfBookIncludingDiscount(numberOfDifferentBooks);
-
-        return getPriceByAmountOfBooks(amountOfBooks);
-    }
 
     private Map<String, Integer> parseBasket(int[] basket) {
         Map<String, Integer> orderedBasket = new HashMap<>();
@@ -42,7 +43,7 @@ public class Potter {
         orderedBasket.put("Fifth", 0);
 
         for (int book : basket) {
-            throwIfBasketContainsNegativeNumber(book);
+            throwIfBasketContainsNegativeNumberOrUnknownBook(book);
             switch (book) {
                 case 0: {
                     Integer numberOfFirstBooks = orderedBasket.get("First");
@@ -78,12 +79,11 @@ public class Potter {
         return numberOfBooks * priceOfOneBook;
     }
 
-    private double calculateValueOfBookIncludingDiscount(int numberOfBooks) {
+    private double calculateDiscountByNumberOfDifferentBooks(int numberOfBooks) {
         double discount = 0;
         switch (numberOfBooks) {
             case 2: {
                 discount = 0.05;
-                ;
                 break;
             }
             case 3: {
@@ -99,13 +99,11 @@ public class Potter {
                 break;
             }
         }
-        double amountOfBooks = calculateValueOfBook(numberOfBooks);
-
-        return amountOfBooks - amountOfBooks * discount;
+        return discount;
     }
 
-    private void throwIfBasketContainsNegativeNumber(int numberOfBooks) {
-        if (numberOfBooks < 0) {
+    private void throwIfBasketContainsNegativeNumberOrUnknownBook(int numberOfBooks) {
+        if (numberOfBooks < 0 || numberOfBooks > 4) {
             throw new EmptyBasketException();
         }
     }

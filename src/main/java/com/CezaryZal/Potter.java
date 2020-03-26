@@ -1,7 +1,10 @@
 package com.CezaryZal;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Potter {
-    private int[] parsedBasket = new int[5];
+    List<Integer> parsedBasket = Arrays.asList(0, 0, 0, 0, 0);
     private boolean parsedBasketIsEmpty;
 
     private final String euroMark = "€";
@@ -11,11 +14,11 @@ public class Potter {
         parseBasket(inputBasket);
         double amountOfBooksWithDiscount = 0;
 
-        while (!parsedBasketIsEmpty){
-                int numberOfDifferentBooks = calculateNumberOfDifferentBooksInBasket(inputBasket.length);
-                double amountOfBooks = calculateValueOfBook(numberOfDifferentBooks);
-                double discount = calculateDiscountByNumberOfDifferentBooks(numberOfDifferentBooks);
-                amountOfBooksWithDiscount += amountOfBooks - amountOfBooks * discount;
+        while (!parsedBasketIsEmpty) {
+            int numberOfDifferentBooks = calculateNumberOfDifferentBooksInBasket(inputBasket.length);
+            double amountOfBooks = calculateValueOfBook(numberOfDifferentBooks);
+            double discount = calculateDiscountByNumberOfDifferentBooks(numberOfDifferentBooks);
+            amountOfBooksWithDiscount += amountOfBooks - amountOfBooks * discount;
         }
         return getPriceByAmountOfBooks(amountOfBooksWithDiscount);
     }
@@ -23,11 +26,16 @@ public class Potter {
     private int calculateNumberOfDifferentBooksInBasket(int inputBasketLength) {
         int numberOfDifferentBooks = 0;
         parsedBasketIsEmpty = true;
-        for (int i = 0; i < parsedBasket.length; i++) {
-            if (numberOfDifferentBooks < 4 || !(inputBasketLength > 6)){
-                numberOfDifferentBooks = handleNumberOfBook(numberOfDifferentBooks, i, parsedBasket[i]);
-                checkIfBasketStillHasBook(i);
+        numberOfDifferentBooks = getNumberOfDifferentBooksByIncrement(inputBasketLength, numberOfDifferentBooks);
+        return numberOfDifferentBooks;
+    }
+
+    private int getNumberOfDifferentBooksByIncrement(int inputBasketLength, int numberOfDifferentBooks) {
+        for (int i = 0; i < parsedBasket.size(); i++) {
+            if (numberOfDifferentBooks < 4 || !(inputBasketLength > 6)) {
+                numberOfDifferentBooks = handleNumberOfBook(numberOfDifferentBooks, i, parsedBasket.get(i));
             }
+            checkIfBasketStillHasBook(i);
         }
         return numberOfDifferentBooks;
     }
@@ -35,13 +43,13 @@ public class Potter {
     private int handleNumberOfBook(int numberOfDifferentBooks, int iteration, int numberOfBooks) {
         if (numberOfBooks != 0) {
             numberOfDifferentBooks++;
-            parsedBasket[iteration] = --numberOfBooks;
+            parsedBasket.set(iteration, --numberOfBooks);
         }
         return numberOfDifferentBooks;
     }
 
     private void checkIfBasketStillHasBook(int iteration) {
-        if (parsedBasket[iteration] != 0){
+        if (parsedBasket.get(iteration) != 0) {
             parsedBasketIsEmpty = false;
         }
     }
@@ -54,8 +62,8 @@ public class Potter {
     }
 
     private void addBookToCorrectType(int numberOfBooks) {
-        int numberOfFirstBooks = parsedBasket[numberOfBooks];
-        parsedBasket[numberOfBooks] = ++numberOfFirstBooks;
+        int numberOfFirstBooks = parsedBasket.get(numberOfBooks);
+        parsedBasket.set(numberOfBooks, ++numberOfFirstBooks);
     }
 
     private double calculateValueOfBook(int numberOfBooks) {

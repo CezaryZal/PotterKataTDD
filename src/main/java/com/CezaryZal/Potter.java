@@ -12,20 +12,22 @@ public class Potter {
         double amountOfBooksWithDiscount = 0;
 
         while (!parsedBasketIsEmpty){
-            int numberOfDifferentBooks = calculateNumberOfDifferentBooksInBasket();
-            double amountOfBooks = calculateValueOfBook(numberOfDifferentBooks);
-            double discount = calculateDiscountByNumberOfDifferentBooks(numberOfDifferentBooks);
-            amountOfBooksWithDiscount += amountOfBooks - amountOfBooks * discount;
+                int numberOfDifferentBooks = calculateNumberOfDifferentBooksInBasket(inputBasket.length);
+                double amountOfBooks = calculateValueOfBook(numberOfDifferentBooks);
+                double discount = calculateDiscountByNumberOfDifferentBooks(numberOfDifferentBooks);
+                amountOfBooksWithDiscount += amountOfBooks - amountOfBooks * discount;
         }
         return getPriceByAmountOfBooks(amountOfBooksWithDiscount);
     }
 
-    private int calculateNumberOfDifferentBooksInBasket() {
+    private int calculateNumberOfDifferentBooksInBasket(int inputBasketLength) {
         int numberOfDifferentBooks = 0;
         parsedBasketIsEmpty = true;
         for (int i = 0; i < parsedBasket.length; i++) {
-            numberOfDifferentBooks = handleNumberOfBook(numberOfDifferentBooks, i, parsedBasket[i]);
-            checkIfBasketStillHasBook(i);
+            if (numberOfDifferentBooks < 4 || !(inputBasketLength > 6)){
+                numberOfDifferentBooks = handleNumberOfBook(numberOfDifferentBooks, i, parsedBasket[i]);
+                checkIfBasketStillHasBook(i);
+            }
         }
         return numberOfDifferentBooks;
     }

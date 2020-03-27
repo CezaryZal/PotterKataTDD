@@ -120,10 +120,34 @@ public class PotterTest {
     }
 
     @Test
-    void shouldReturnPriceOfFourDifferentBooksAndThreeSameBook() {
+    void shouldReturnPriceOfFourDifferentBooksAndThreeSameBook1() {
         int[] basket = {0, 0, 1, 1, 2, 2, 3, 4};
         String priceOfSixBooks = potter.buyBooks(basket);
         assertThat(priceOfSixBooks).isEqualTo("51.2€");
     }
 
+    @Test
+    void shouldReturnPriceOfFourDifferentBooksAndThreeSameBook2() {
+        int[] basket = {0, 1, 1, 2, 2, 3, 4, 4};
+        String priceOfSixBooks = potter.buyBooks(basket);
+        assertThat(priceOfSixBooks).isEqualTo("51.2€");
+    }
+
+    @Test
+    void shouldReturnPriceOfFiveDifferentBooksAndFiveSameBook() {
+        int[] basket = {0, 0, 1, 1, 2, 2, 3, 3, 4, 4};
+        String priceOfSixBooks = potter.buyBooks(basket);
+        assertThat(priceOfSixBooks).isEqualTo("60.0€");
+    }
+
+    @Test
+    void shouldReturnPriceOfFourDifssferentBooksAndThreeSameBook() {
+        int[] basket = {0, 0, 0, 0, 0,
+                1, 1, 1, 1, 1,
+                2, 2, 2, 2,
+                3, 3, 3, 3, 3,
+                4, 4, 4, 4};
+        String priceOfSixBooks = potter.buyBooks(basket);
+        assertThat(priceOfSixBooks).isEqualTo("141.6€");
+    }
 }

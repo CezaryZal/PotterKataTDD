@@ -1,69 +1,86 @@
 package com.CezaryZal;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class Potter {
-    List<Integer> parsedBasket = Arrays.asList(0, 0, 0, 0, 0);
-    private boolean parsedBasketIsEmpty;
 
     private final String euroMark = "€";
     private final double priceOfOneBook = 8.0;
 
     public String buyBooks(int[] inputBasket) {
-        parseBasket(inputBasket);
+        List<Integer> parsedBasketForFirstOption = parseBasket(inputBasket);
+        double amountOfBooksWithDiscount1 =
+                getAmountOfBooksWithDiscount(inputBasket.length, 4, parsedBasketForFirstOption);
+        List<Integer> parsedBasketForSecondOption = parseBasket(inputBasket);
+        double amountOfBooksWithDiscount2 =
+                getAmountOfBooksWithDiscount(inputBasket.length, 5, parsedBasketForSecondOption);
+
+        return amountOfBooksWithDiscount1 < amountOfBooksWithDiscount2 ?
+                getPriceByAmountOfBooks(amountOfBooksWithDiscount1) : getPriceByAmountOfBooks(amountOfBooksWithDiscount2);
+    }
+
+    private double getAmountOfBooksWithDiscount(int inputBasketLength, int numberForOption, List<Integer> parsedBasket) {
+        boolean parsedBasketIsEmpty = false;
         double amountOfBooksWithDiscount = 0;
 
         while (!parsedBasketIsEmpty) {
-            int numberOfDifferentBooks = calculateNumberOfDifferentBooksInBasket(inputBasket.length);
+            int numberOfDifferentBooks = 0;
+            parsedBasketIsEmpty = true;
+            List<Integer> tmpParsedBasket = new ArrayList<>(parsedBasket);
+
+            for (Integer bookType : parsedBasket) {
+
+                if (tmpParsedBasket.stream().mapToInt((a) -> a).sum() != 0) {
+                    int maxNumber = 0;
+                    int position = 0;
+
+                    for (int j = 0; j < 5; j++) {
+                        if (tmpParsedBasket.get(j) > maxNumber) {
+                            maxNumber = tmpParsedBasket.get(j);
+                            position = j;
+                        } else if (tmpParsedBasket.get(j) != 0) {
+                            tmpParsedBasket.set(j, parsedBasket.get(j));
+                        }
+                    }
+                    tmpParsedBasket.set(position, 0);
+                    if ((numberOfDifferentBooks < numberForOption || !(inputBasketLength > 6)) &&
+                            parsedBasket.get(position) != 0) {
+
+                        numberOfDifferentBooks++;
+                        Integer currentNumberOfBook = parsedBasket.get(position);
+                        parsedBasket.set(position, --currentNumberOfBook);
+                        parsedBasketIsEmpty = isParsedBasketIsEmpty(parsedBasket.get(position));
+                    }
+
+                }
+            }
             double amountOfBooks = calculateValueOfBook(numberOfDifferentBooks);
             double discount = calculateDiscountByNumberOfDifferentBooks(numberOfDifferentBooks);
             amountOfBooksWithDiscount += amountOfBooks - amountOfBooks * discount;
         }
-        return getPriceByAmountOfBooks(amountOfBooksWithDiscount);
+        return amountOfBooksWithDiscount;
     }
 
-    private int calculateNumberOfDifferentBooksInBasket(int inputBasketLength) {
-        int numberOfDifferentBooks = 0;
-        parsedBasketIsEmpty = true;
-        numberOfDifferentBooks = getNumberOfDifferentBooksByIncrement(inputBasketLength, numberOfDifferentBooks);
-        return numberOfDifferentBooks;
+    private boolean isParsedBasketIsEmpty(int currentNumberOfBooksOfSpecificType) {
+        return currentNumberOfBooksOfSpecificType == 0;
     }
+//    private int calculateNumberOfDifferentBooksInBasket(int inputBasketLength) {
 
-    private int getNumberOfDifferentBooksByIncrement(int inputBasketLength, int numberOfDifferentBooks) {
-        for (int i = 0; i < parsedBasket.size(); i++) {
-            if (numberOfDifferentBooks < 4 || !(inputBasketLength > 6)) {
-                numberOfDifferentBooks = handleNumberOfBook(numberOfDifferentBooks, i, parsedBasket.get(i));
-            }
-            checkIfBasketStillHasBook(i);
-        }
-        return numberOfDifferentBooks;
-    }
 
-    private int handleNumberOfBook(int numberOfDifferentBooks, int iteration, int numberOfBooks) {
-        if (numberOfBooks != 0) {
-            numberOfDifferentBooks++;
-            parsedBasket.set(iteration, --numberOfBooks);
-        }
-        return numberOfDifferentBooks;
-    }
+//    private int handleNumberOfBook(int numberOfDifferentBooks, int iteration, int numberOfBooks) {
 
-    private void checkIfBasketStillHasBook(int iteration) {
-        if (parsedBasket.get(iteration) != 0) {
-            parsedBasketIsEmpty = false;
-        }
-    }
 
-    private void parseBasket(int[] InputBasket) {
+    private List<Integer> parseBasket(int[] InputBasket) {
+        List<Integer> parsedBasket = Arrays.asList(0, 0, 0, 0, 0);
         for (int numberOfBooks : InputBasket) {
             throwIfBasketContainsNegativeNumberOrUnknownBook(numberOfBooks);
-            addBookToCorrectType(numberOfBooks);
-        }
-    }
 
-    private void addBookToCorrectType(int numberOfBooks) {
-        int numberOfFirstBooks = parsedBasket.get(numberOfBooks);
-        parsedBasket.set(numberOfBooks, ++numberOfFirstBooks);
+            int numberOfFirstBooks = parsedBasket.get(numberOfBooks);
+            parsedBasket.set(numberOfBooks, ++numberOfFirstBooks);
+        }
+        return parsedBasket;
     }
 
     private double calculateValueOfBook(int numberOfBooks) {

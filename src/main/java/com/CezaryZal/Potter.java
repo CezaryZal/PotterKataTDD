@@ -11,14 +11,11 @@ public class Potter {
 
     public String buyBooks(int[] inputBasket) {
         List<Integer> parsedBasketForFirstOption = parseBasket(inputBasket);
-        double amountOfBooksWithDiscount1 =
-                getAmountOfBooksWithDiscount(inputBasket.length, 4, parsedBasketForFirstOption);
         List<Integer> parsedBasketForSecondOption = parseBasket(inputBasket);
-        double amountOfBooksWithDiscount2 =
-                getAmountOfBooksWithDiscount(inputBasket.length, 5, parsedBasketForSecondOption);
 
-        return amountOfBooksWithDiscount1 < amountOfBooksWithDiscount2 ?
-                getPriceByAmountOfBooks(amountOfBooksWithDiscount1) : getPriceByAmountOfBooks(amountOfBooksWithDiscount2);
+        return getPriceByAmountOfBooks(Math.min(
+                getAmountOfBooksWithDiscount(inputBasket.length, 4, parsedBasketForFirstOption),
+                getAmountOfBooksWithDiscount(inputBasket.length, 5, parsedBasketForSecondOption)));
     }
 
     private double getAmountOfBooksWithDiscount(int inputBasketLength, int numberForOption, List<Integer> parsedBasket) {
@@ -26,34 +23,25 @@ public class Potter {
         double amountOfBooksWithDiscount = 0;
 
         while (!parsedBasketIsEmpty) {
-            int numberOfDifferentBooks = 0;
-            parsedBasketIsEmpty = true;
             List<Integer> tmpParsedBasket = new ArrayList<>(parsedBasket);
+            parsedBasketIsEmpty = true;
+            int numberOfDifferentBooks = 0;
 
             for (Integer bookType : parsedBasket) {
 
-                if (tmpParsedBasket.stream().mapToInt((a) -> a).sum() != 0) {
-                    int maxNumber = 0;
-                    int position = 0;
+                if (getSumOfTmpParsedBasket(tmpParsedBasket) != 0) {
 
-                    for (int j = 0; j < 5; j++) {
-                        if (tmpParsedBasket.get(j) > maxNumber) {
-                            maxNumber = tmpParsedBasket.get(j);
-                            position = j;
-                        } else if (tmpParsedBasket.get(j) != 0) {
-                            tmpParsedBasket.set(j, parsedBasket.get(j));
-                        }
-                    }
-                    tmpParsedBasket.set(position, 0);
+                    int index = indexForHighestValue(tmpParsedBasket, parsedBasket);
+                    tmpParsedBasket.set(index, 0);
+
                     if ((numberOfDifferentBooks < numberForOption || !(inputBasketLength > 6)) &&
-                            parsedBasket.get(position) != 0) {
+                            parsedBasket.get(index) != 0) {
 
                         numberOfDifferentBooks++;
-                        Integer currentNumberOfBook = parsedBasket.get(position);
-                        parsedBasket.set(position, --currentNumberOfBook);
-                        parsedBasketIsEmpty = isParsedBasketIsEmpty(parsedBasket.get(position));
+                        Integer currentNumberOfBook = parsedBasket.get(index);
+                        parsedBasket.set(index, --currentNumberOfBook);
                     }
-
+                    parsedBasketIsEmpty = isParsedBasketIsEmpty(parsedBasketIsEmpty, parsedBasket.get(index));
                 }
             }
             double amountOfBooks = calculateValueOfBook(numberOfDifferentBooks);
@@ -63,17 +51,35 @@ public class Potter {
         return amountOfBooksWithDiscount;
     }
 
-    private boolean isParsedBasketIsEmpty(int currentNumberOfBooksOfSpecificType) {
-        return currentNumberOfBooksOfSpecificType == 0;
+    private int indexForHighestValue(List<Integer> tmpParsedBasket, List<Integer> parsedBasket){
+        int maxNumber = 0;
+        int index = 0;
+        
+        for (int j = 0; j < 5; j++) {
+            if (tmpParsedBasket.get(j) > maxNumber) {
+                maxNumber = tmpParsedBasket.get(j);
+                index = j;
+            } else if (tmpParsedBasket.get(j) != 0) {
+                tmpParsedBasket.set(j, parsedBasket.get(j));
+            }
+        }
+        return index;
     }
-//    private int calculateNumberOfDifferentBooksInBasket(int inputBasketLength) {
 
+    private int getSumOfTmpParsedBasket(List<Integer> tmpParsedBasket) {
+        return tmpParsedBasket.stream().mapToInt((a) -> a).sum();
+    }
 
-//    private int handleNumberOfBook(int numberOfDifferentBooks, int iteration, int numberOfBooks) {
-
+    private boolean isParsedBasketIsEmpty(boolean parsedBasketIsEmpty, int currentNumberOfBooksOfSpecificType) {
+        if (currentNumberOfBooksOfSpecificType != 0) {
+            parsedBasketIsEmpty = false;
+        }
+        return parsedBasketIsEmpty;
+    }
 
     private List<Integer> parseBasket(int[] InputBasket) {
         List<Integer> parsedBasket = Arrays.asList(0, 0, 0, 0, 0);
+
         for (int numberOfBooks : InputBasket) {
             throwIfBasketContainsNegativeNumberOrUnknownBook(numberOfBooks);
 
